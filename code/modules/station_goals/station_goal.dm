@@ -49,3 +49,6 @@
 	if(SSstation.goals_by_type[type] == src)
 		SSstation.goals_by_type -= type
 	return ..()
+
+/datum/station_goal/station_shield/proc/get_coverage()
+    return cached_coverage_length

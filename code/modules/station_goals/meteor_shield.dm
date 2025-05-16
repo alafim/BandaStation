@@ -9,13 +9,10 @@
 /// how long between emagging meteor shields you have to wait
 #define METEOR_SHIELD_EMAG_COOLDOWN 1 MINUTES
 
-//Station Shield
-// A chain of satellites encircles the station
-// Satellites be actived to generate a shield that will block unorganic matter from passing it.
 /datum/station_goal/station_shield
 	name = "Station Shield"
 	requires_space = TRUE
-	var/coverage_goal = 500
+	var/coverage_goal = 50
 	VAR_PRIVATE/cached_coverage_length
 
 /datum/station_goal/station_shield/get_report()
@@ -24,14 +21,12 @@
 		"Станция находится в зоне, заполненной космическим мусором.",
 		"У вас есть прототип защитной системы, который необходимо развернуть для снижения количества аварий из-за столкновений.<br>",
 		"Вы можете заказать спутники и системы через отдел снабжения.",
+		"Требуется: [cached_coverage_length]/[coverage_goal] единиц покрытия (1 спутник = 10 единиц)"
 	).Join("\n")
 
-
 /datum/station_goal/station_shield/on_report()
-	//Unlock
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shield_sat]
 	P.special_enabled = TRUE
-
 	P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shield_sat_control]
 	P.special_enabled = TRUE
 
@@ -39,118 +34,118 @@
 	if(..())
 		return TRUE
 	update_coverage()
-	if(cached_coverage_length >= coverage_goal)
-		return TRUE
-	return FALSE
+	return cached_coverage_length >= coverage_goal
 
-/datum/station_goal/station_shield/proc/get_coverage()
-	return cached_coverage_length
-
-/// Gets the coverage of all active meteor shield satellites
-/// Can be expensive, ensure you need this before calling it
 /datum/station_goal/station_shield/proc/update_coverage()
-	var/list/coverage = list()
-	for(var/obj/machinery/satellite/meteor_shield/shield_satt as anything in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/satellite/meteor_shield))
-		if(!shield_satt.active || !is_station_level(shield_satt.z))
-			continue
-		for(var/turf/covered in view(shield_satt.kill_range, shield_satt))
-			coverage |= covered
-	cached_coverage_length = length(coverage)
+	var/active_shields = 0
+	for(var/obj/machinery/satellite/meteor_shield/shield_satt in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/satellite/meteor_shield))
+		if(shield_satt.active && is_station_level(shield_satt.z))
+			active_shields++
+	cached_coverage_length = active_shields * 10
 
 /obj/machinery/satellite/meteor_shield
 	name = "\improper Meteor Shield Satellite"
 	desc = "A meteor point-defense satellite."
 	mode = "M-SHIELD"
-	/// the range a meteor shield sat can destroy meteors
 	var/kill_range = 14
-
-	//emag behavior dark matt-eor stuff
-
-	/// Proximity monitor associated with this atom, needed for it to work.
 	var/datum/proximity_monitor/proximity_monitor
-
-	/// amount of emagged active meteor shields
 	var/static/emagged_active_meteor_shields = 0
-	/// the highest amount of shields you've ever emagged
 	var/static/highest_emagged_threshold_reached = 0
-	/// cooldown on emagging meteor shields because instantly summoning a dark matt-eor is very unfun
 	STATIC_COOLDOWN_DECLARE(shared_emag_cooldown)
 
 /obj/machinery/satellite/meteor_shield/examine(mob/user)
 	. = ..()
+	. += span_info("Требуется минимальное расстояние в 10 тайлов между активными спутниками.")
 	if(active)
-		. += span_notice("It is currently active. You can interact with it to shut it down.")
 		if(obj_flags & EMAGGED)
-			. += span_warning("Rather than the usual sounds of beeps and pings, it produces a weird and constant hiss of white noise…")
-		else
-			. += span_notice("It emits periodic beeps and pings as it communicates with the satellite network.")
+			. += span_warning("Излучает странный шипящий звук...")
 	else
-		. += span_notice("It is currently disabled. You can interact with it to set it up.")
 		if(obj_flags & EMAGGED)
-			. += span_warning("But something seems off about it...?")
+			. += span_warning("Кажется, система защиты отключена...")
+
+/obj/machinery/satellite/meteor_shield/Initialize(mapload)
+	. = ..()
+	proximity_monitor = new(src, 0)
+
+/obj/machinery/satellite/meteor_shield/HasProximity(atom/movable/proximity_check_mob)
+	if(!istype(proximity_check_mob, /obj/effect/meteor))
+		return
+	var/obj/effect/meteor/M = proximity_check_mob
+	if(space_los(M))
+		var/turf/beam_from = get_turf(src)
+		beam_from.Beam(get_turf(M), icon_state="sat_beam", time = 5)
+		if(M.shield_defense(src))
+			qdel(M)
 
 /obj/machinery/satellite/meteor_shield/proc/space_los(meteor)
-	for(var/turf/T in get_line(src,meteor))
+	for(var/turf/T in get_line(src, meteor))
 		if(!isspaceturf(T))
 			return FALSE
 	return TRUE
 
-/obj/machinery/satellite/meteor_shield/Initialize(mapload)
-	. = ..()
-	proximity_monitor = new(src, /* range = */ 0)
-
-/obj/machinery/satellite/meteor_shield/HasProximity(atom/movable/proximity_check_mob)
-	. = ..()
-	if(!istype(proximity_check_mob, /obj/effect/meteor))
-		return
-	var/obj/effect/meteor/meteor_to_destroy = proximity_check_mob
-	if(space_los(meteor_to_destroy))
-		var/turf/beam_from = get_turf(src)
-		beam_from.Beam(get_turf(meteor_to_destroy), icon_state="sat_beam", time = 5)
-		if(meteor_to_destroy.shield_defense(src))
-			qdel(meteor_to_destroy)
-
 /obj/machinery/satellite/meteor_shield/toggle(user)
 	if(user)
 		balloon_alert(user, "looking for [active ? "off" : "on"] button")
-	if(user && !do_after(user, 2 SECONDS, src, IGNORE_HELD_ITEM))
+	if(user && !do_after(user, 2 SECONDS, src))
 		return FALSE
-	if(!..(user))
+
+	if(!active)
+		var/list/activation_check = can_activate()
+		if(!activation_check[1])
+			if(user)
+				to_chat(user, span_warning("Нельзя активировать: [activation_check[2]]"))
+			return FALSE
+
+	if(!..())
 		return FALSE
+
 	if(obj_flags & EMAGGED)
 		update_emagged_meteor_sat(user)
 
-	if(active)
-		proximity_monitor.set_range(kill_range)
-	else
-		proximity_monitor.set_range(0)
-
-
+	proximity_monitor.set_range(active ? kill_range : 0)
 	var/datum/station_goal/station_shield/goal = SSstation.get_station_goal(/datum/station_goal/station_shield)
 	goal?.update_coverage()
+	return TRUE
+
+/obj/machinery/satellite/meteor_shield/proc/can_activate()
+	var/list/conflicting = list()
+	for(var/obj/machinery/satellite/meteor_shield/other in SSmachines.get_machines_by_type_and_subtypes(/obj/machinery/satellite/meteor_shield))
+		if(other == src || !other.active || other.z != z)
+			continue
+		var/distance = sqrt((x - other.x)**2 + (y - other.y)**2)
+		if(distance < 10)
+			conflicting += other
+
+	if(length(conflicting))
+		var/msg = "Конфликтующие спутники:"
+		for(var/obj/machinery/satellite/M in conflicting)
+			msg += "\n-[M] в ([M.x], [M.y])"
+		return list(FALSE, msg)
+
+	return list(TRUE, "")
 
 /obj/machinery/satellite/meteor_shield/Destroy()
-	. = ..()
 	QDEL_NULL(proximity_monitor)
-	if(obj_flags & EMAGGED)
-		//satellites that are destroying are not active, this will count down the number of emagged sats
+	if(obj_flags & EMAGGED && active)
 		update_emagged_meteor_sat()
+	return ..()
 
 /obj/machinery/satellite/meteor_shield/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
-		balloon_alert(user, "already emagged!")
+		balloon_alert(user, "Уже эмэггнуто!")
 		return FALSE
 	if(!COOLDOWN_FINISHED(src, shared_emag_cooldown))
-		balloon_alert(user, "on cooldown!")
-		to_chat(user, span_warning("The last satellite emagged needs [DisplayTimeText(COOLDOWN_TIMELEFT(src, shared_emag_cooldown))] to recalibrate first. Emagging another so soon could damage the satellite network."))
+		balloon_alert(user, "Перезарядка!")
+		to_chat(user, span_warning("Требуется [DisplayTimeText(COOLDOWN_TIMELEFT(src, shared_emag_cooldown))] перед следующим эмэггингом."))
 		return FALSE
-	var/cooldown_applied = METEOR_SHIELD_EMAG_COOLDOWN
-	COOLDOWN_START(src, shared_emag_cooldown, cooldown_applied)
+
+	COOLDOWN_START(src, shared_emag_cooldown, METEOR_SHIELD_EMAG_COOLDOWN)
 	obj_flags |= EMAGGED
-	to_chat(user, span_notice("You access the satellite's debug mode and it begins emitting a strange signal, increasing the chance of meteor strikes."))
-	AddComponent(/datum/component/gps, "Corrupted Meteor Shield Attraction Signal")
-	say("Recalibrating... ETA:[DisplayTimeText(cooldown_applied)].")
-	if(active) //if we allowed inactive updates a sat could be worth -1 active meteor shields on first emag
+	to_chat(user, span_notice("Активирован режим привлечения метеоров!"))
+	AddComponent(/datum/component/gps, "Искажённый сигнал")
+	say("Калибровка... [DisplayTimeText(METEOR_SHIELD_EMAG_COOLDOWN)]")
+
+	if(active)
 		update_emagged_meteor_sat(user)
 	return TRUE
 
@@ -159,12 +154,14 @@
 		change_meteor_chance(0.5)
 		emagged_active_meteor_shields--
 		if(user)
-			balloon_alert(user, "meteor probability halved")
+			balloon_alert(user, "Шанс метеоров уменьшен")
 		return
+
 	change_meteor_chance(2)
 	emagged_active_meteor_shields++
 	if(user)
-		balloon_alert(user, "meteor probability doubled")
+		balloon_alert(user, "Шанс метеоров увеличен")
+
 	if(emagged_active_meteor_shields > highest_emagged_threshold_reached)
 		highest_emagged_threshold_reached = emagged_active_meteor_shields
 		handle_new_emagged_shield_threshold()
@@ -172,27 +169,24 @@
 /obj/machinery/satellite/meteor_shield/proc/handle_new_emagged_shield_threshold()
 	switch(highest_emagged_threshold_reached)
 		if(EMAGGED_METEOR_SHIELD_THRESHOLD_ONE)
-			say("Warning. Meteor strike probability entering dangerous ranges for more exotic meteors.")
+			say("Внимание: повышен риск экзотических метеоров")
 		if(EMAGGED_METEOR_SHIELD_THRESHOLD_TWO)
-			say("Warning. Risk of dark matter congealment entering existent ranges. Further tampering will be reported.")
+			say("Опасность: возможна конденсация тёмной материи")
 		if(EMAGGED_METEOR_SHIELD_THRESHOLD_THREE)
-			say("Warning. Further tampering has been reported.")
-			priority_announce("Warning. Tampering of meteor satellites puts the station at risk of exotic, deadly meteor collisions. Please intervene by checking your GPS devices for strange signals, and dismantling the tampered meteor shields.", "Strange Meteor Signal Warning")
+			say("Обнаружено вмешательство! Отправлен отчет.")
+			priority_announce("ВНИМАНИЕ: Обнаружено вмешательство в метеорные щиты. Проверьте GPS сигналы.", "Служба безопасности")
 		if(EMAGGED_METEOR_SHIELD_THRESHOLD_FOUR)
-			say("Warning. Warning. Dark Matt-eor on course for station.")
-			force_event_async(/datum/round_event_control/dark_matteor, "an array of tampered meteor satellites")
+			say("КРИТИЧЕСКИЙ СБОЙ! Тёмный метеор на курсе!")
+			force_event_async(/datum/round_event_control/dark_matteor, "взломанные спутники")
 
 /obj/machinery/satellite/meteor_shield/proc/change_meteor_chance(mod)
-	// Update the weight of all meteor events
 	for(var/datum/round_event_control/meteor_wave/meteors in SSevents.control)
 		meteors.weight *= mod
-	for(var/datum/round_event_control/stray_meteor/stray_meteor in SSevents.control)
-		stray_meteor.weight *= mod
-
+	for(var/datum/round_event_control/stray_meteor/stray in SSevents.control)
+		stray.weight *= mod
 
 #undef EMAGGED_METEOR_SHIELD_THRESHOLD_ONE
 #undef EMAGGED_METEOR_SHIELD_THRESHOLD_TWO
 #undef EMAGGED_METEOR_SHIELD_THRESHOLD_THREE
 #undef EMAGGED_METEOR_SHIELD_THRESHOLD_FOUR
-
 #undef METEOR_SHIELD_EMAG_COOLDOWN
