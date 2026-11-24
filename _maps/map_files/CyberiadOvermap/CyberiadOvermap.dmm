@@ -1,4 +1,9 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"aad" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/plating,
+/area/station/maintenance/ghetto/port)
 "aae" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 1
@@ -67008,6 +67013,13 @@
 /obj/structure/railing/corner,
 /turf/open/floor/iron/dark/smooth_edge,
 /area/station/service/chapel/monastery)
+"pYw" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/effect/decal/cleanable/dirt,
+/turf/open/floor/iron,
+/area/station/cargo/storage)
 "pYz" = (
 /obj/effect/turf_decal/trimline/purple/line{
 	dir = 8
@@ -68859,6 +68871,13 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/station/maintenance/aft)
+"qyk" = (
+/obj/effect/mapping_helpers/airlock/autoname,
+/obj/effect/mapping_helpers/airlock/access/all/supply/general,
+/obj/machinery/door/firedoor,
+/obj/machinery/door/airlock/maintenance,
+/turf/open/floor/plating,
+/area/station/cargo/storage/ghetto)
 "qyl" = (
 /obj/machinery/photocopier/prebuilt,
 /turf/open/floor/carpet,
@@ -72188,8 +72207,16 @@
 /turf/open/floor/plating,
 /area/station/engineering/storage)
 "rnA" = (
+<<<<<<< Updated upstream
 /obj/machinery/light/directional/south,
 /obj/machinery/firealarm/directional/south,
+=======
+/obj/machinery/firealarm/directional/north,
+/obj/machinery/camera/directional/north{
+	c_tag = "Cargo - Bay Lower Floor";
+	network = list("ss13","cargo")
+	},
+>>>>>>> Stashed changes
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "rnD" = (
@@ -82176,6 +82203,11 @@
 /obj/structure/girder,
 /turf/open/floor/iron,
 /area/station/maintenance/department/engine)
+"tJT" = (
+/obj/machinery/light/directional/south,
+/obj/machinery/firealarm/directional/south,
+/turf/open/floor/iron,
+/area/station/cargo/storage)
 "tKb" = (
 /obj/machinery/camera/directional/south{
 	c_tag = "Bridge - Center"
@@ -115301,7 +115333,11 @@ rgO
 tWQ
 xWL
 rQU
+<<<<<<< Updated upstream
 uiw
+=======
+rnA
+>>>>>>> Stashed changes
 uhI
 oBo
 oBo
@@ -115552,12 +115588,20 @@ xWL
 tWQ
 tWQ
 mQU
+<<<<<<< Updated upstream
 eyv
+=======
+aad
+>>>>>>> Stashed changes
 rgO
 mQU
 rgO
 mQU
+<<<<<<< Updated upstream
 ieB
+=======
+qyk
+>>>>>>> Stashed changes
 oBo
 fNt
 bCN
@@ -183666,7 +183710,7 @@ xPx
 sWW
 htD
 jFh
-jFh
+hsX
 jFh
 jFh
 jFh
@@ -183925,9 +183969,14 @@ htD
 jFh
 jFh
 pIJ
+hsX
 jFh
+<<<<<<< Updated upstream
 jFh
 rnA
+=======
+tJT
+>>>>>>> Stashed changes
 jJz
 apZ
 ifO
@@ -184179,7 +184228,7 @@ bpR
 xPx
 tOM
 htD
-jFh
+hsX
 jFh
 jFh
 jFh
@@ -184693,7 +184742,7 @@ bsm
 fXg
 aSC
 kBN
-uts
+pYw
 uts
 uts
 uts
@@ -184952,7 +185001,7 @@ cIg
 kGz
 jFh
 jFh
-jFh
+hsX
 jFh
 jFh
 jFh
@@ -185209,10 +185258,10 @@ rtU
 kGz
 jFh
 jFh
-jFh
+hsX
 pIJ
 jFh
-jFh
+hsX
 jFh
 jFh
 hsX
