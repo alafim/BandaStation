@@ -3103,6 +3103,7 @@
 /area/station/medical/surgery/theatre)
 "aMy" = (
 /obj/structure/cable,
+/obj/machinery/holopad,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/Jo)
 "aML" = (
@@ -7299,6 +7300,9 @@
 /area/station/service/theater)
 "bKJ" = (
 /obj/machinery/firealarm/directional/north,
+/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
+	dir = 8
+	},
 /turf/open/floor/iron/dark,
 /area/station/ai/satellite/chamber)
 "bKV" = (
@@ -11429,7 +11433,7 @@
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 1
 	},
-/obj/machinery/modular_computer/preset/engineering,
+/obj/machinery/computer/stationtrauma_station_traffic,
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "cIJ" = (
@@ -12488,6 +12492,7 @@
 	dir = 4
 	},
 /obj/structure/closet,
+/obj/machinery/camera/directional/east,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/Jo)
 "cUW" = (
@@ -29867,6 +29872,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
+/obj/machinery/duct,
 /turf/open/floor/iron/dark,
 /area/station/medical/surgery/fore)
 "gXI" = (
@@ -35434,6 +35440,15 @@
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/lobby)
+"ijM" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+/obj/machinery/computer/stationtrauma_dispatch{
+	site_id = "cyberiad"
+	},
+/turf/open/floor/iron,
+/area/station/command/bridge_low)
 "ijO" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -42161,7 +42176,9 @@
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 4
 	},
-/obj/machinery/modular_computer/preset/engineering,
+/obj/machinery/computer/stationtrauma_dispatch{
+	site_id = "cyberiad"
+	},
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "jQa" = (
@@ -55789,7 +55806,7 @@
 	dir = 1
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/modular_computer/preset/engineering,
+/obj/machinery/computer/sector_trade_monitor,
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "mVm" = (
@@ -58409,6 +58426,7 @@
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 1
 	},
+/obj/machinery/camera/directional/north,
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "nBN" = (
@@ -62712,6 +62730,11 @@
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
 /turf/open/floor/iron/dark,
 /area/station/engineering/supermatter/room)
+"oCc" = (
+/obj/structure/lattice,
+/obj/machinery/camera/directional/north,
+/turf/open/space/basic,
+/area/space/nearstation)
 "oCl" = (
 /obj/machinery/door/airlock/public/glass,
 /obj/effect/mapping_helpers/airlock/autoname,
@@ -63555,6 +63578,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 1
 	},
+/obj/machinery/duct,
 /turf/open/floor/iron/dark,
 /area/station/medical/surgery/aft)
 "oMf" = (
@@ -65516,9 +65540,10 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/upper)
 "pjU" = (
-/obj/structure/chair/office,
-/obj/structure/extinguisher_cabinet/directional/east,
-/turf/open/floor/iron/dark,
+/obj/structure/cable/multilayer/multiz,
+/obj/structure/window/reinforced/spawner/directional/west,
+/obj/structure/window/reinforced/spawner/directional/north,
+/turf/open/floor/plating,
 /area/station/ai/satellite/chamber)
 "pjZ" = (
 /obj/machinery/space_heater,
@@ -68254,7 +68279,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 4
 	},
-/obj/item/kirbyplants/random,
+/obj/machinery/shower/directional/east,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/aft)
 "pQT" = (
@@ -74275,6 +74300,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
+"rnP" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable,
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/obj/machinery/camera/directional/south,
+/turf/open/floor/iron,
+/area/station/command/bridge_low2)
 "roi" = (
 /obj/structure/chair/office,
 /obj/effect/landmark/start/assistant,
@@ -76515,7 +76548,9 @@
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1
 	},
-/obj/machinery/modular_computer/preset/engineering,
+/obj/machinery/computer/stationtrauma_dispatch{
+	site_id = "cyberiad"
+	},
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "rQB" = (
@@ -77645,6 +77680,11 @@
 	},
 /turf/open/space/openspace,
 /area/space)
+"scP" = (
+/obj/structure/lattice,
+/obj/structure/lattice,
+/turf/open/space/basic,
+/area/space/nearstation)
 "scV" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -82934,11 +82974,10 @@
 /turf/open/floor/wood/tile,
 /area/station/command/heads_quarters/magistrate)
 "tpJ" = (
-/obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
-	dir = 8
-	},
-/turf/open/floor/iron/dark,
-/area/station/ai/satellite/chamber)
+/obj/structure/lattice,
+/obj/machinery/camera/directional/south,
+/turf/open/space/basic,
+/area/space/nearstation)
 "tpM" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/effect/decal/cleanable/blood,
@@ -84082,6 +84121,7 @@
 	pixel_x = 7;
 	pixel_y = 18
 	},
+/obj/machinery/camera/directional/west,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/Bs)
 "tCZ" = (
@@ -84570,7 +84610,7 @@
 /obj/effect/turf_decal/trimline/blue/filled/line{
 	dir = 4
 	},
-/obj/item/kirbyplants/random,
+/obj/machinery/shower/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/surgery/fore)
 "tJk" = (
@@ -87960,10 +88000,10 @@
 /turf/open/floor/wood/tile,
 /area/station/service/lawoffice)
 "uAl" = (
-/obj/machinery/modular_computer/preset/engineering,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 4
 	},
+/obj/machinery/computer/sector_trade_monitor,
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "uAo" = (
@@ -90940,6 +90980,13 @@
 /obj/effect/mapping_helpers/broken_floor,
 /turf/open/floor/wood,
 /area/station/maintenance/starboard/aft)
+"vnf" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 8
+	},
+/obj/machinery/camera/directional/west,
+/turf/open/floor/iron,
+/area/station/command/bridge_low)
 "vnl" = (
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/grimy,
@@ -96901,10 +96948,10 @@
 /turf/open/floor/wood/parquet,
 /area/station/security/courtroom)
 "wId" = (
-/obj/machinery/modular_computer/preset/engineering,
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 1
 	},
+/obj/machinery/computer/sector_trade_monitor,
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "wIg" = (
@@ -97706,7 +97753,7 @@
 	dir = 4
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/modular_computer/preset/engineering,
+/obj/machinery/computer/sector_trade_monitor,
 /turf/open/floor/iron,
 /area/station/command/bridge_low)
 "wSt" = (
@@ -98180,6 +98227,7 @@
 "wXT" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/holopad,
 /turf/open/floor/iron,
 /area/station/command/heads_quarters/Bs)
 "wXY" = (
@@ -99684,6 +99732,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/maintenance/aft)
+"xpu" = (
+/obj/machinery/holopad,
+/turf/open/floor/iron,
+/area/station/command/bridge_low2)
 "xpV" = (
 /obj/effect/turf_decal/trimline/yellow/filled/warning{
 	dir = 9
@@ -100488,7 +100540,7 @@
 "xAb" = (
 /obj/structure/table/wood,
 /obj/structure/transmitter/bridge{
-	display_name = "Офис капитана";
+	display_name = "Центр управления полетами";
 	pixel_y = 6
 	},
 /obj/machinery/light/floor,
@@ -130798,7 +130850,7 @@ doz
 xoY
 ooe
 ifG
-dfT
+vnf
 dfT
 hOY
 sBw
@@ -131569,7 +131621,7 @@ doz
 xoY
 cID
 vbo
-alT
+glm
 jPX
 alT
 pma
@@ -131824,7 +131876,7 @@ doz
 ceC
 ceC
 xoY
-cID
+ijM
 qvC
 alT
 lWt
@@ -132083,7 +132135,7 @@ doz
 xoY
 wrn
 qvC
-glm
+alT
 xAb
 mId
 pma
@@ -132097,12 +132149,12 @@ oNz
 gOU
 wgK
 pXQ
-gah
+rnP
 gOU
 fCl
 tIh
 omm
-pXQ
+xpu
 jko
 iBP
 wQH
@@ -132338,7 +132390,7 @@ doz
 ceC
 doz
 xoY
-cID
+ijM
 cRx
 cRx
 pfz
@@ -132597,7 +132649,7 @@ doz
 xoY
 cID
 gYQ
-alT
+glm
 rQv
 alT
 pma
@@ -142203,16 +142255,16 @@ doz
 doz
 doz
 doz
+ceC
+kJZ
+ceC
 doz
 doz
 doz
 doz
-doz
-doz
-doz
-doz
-doz
-doz
+ceC
+ceC
+ceC
 doz
 doz
 doz
@@ -142448,14 +142500,14 @@ doz
 ceC
 doz
 doz
+qtm
+ceC
 doz
 doz
 doz
 doz
 doz
 doz
-doz
-doz
 phd
 phd
 phd
@@ -142469,7 +142521,7 @@ phd
 phd
 phd
 phd
-doz
+ceC
 doz
 doz
 doz
@@ -142726,7 +142778,7 @@ mxm
 mxm
 mxm
 phd
-ceC
+scP
 ceC
 ceC
 ceC
@@ -144014,7 +144066,7 @@ rmp
 iaY
 qYk
 phd
-ceC
+oCc
 ceC
 ceC
 ceC
@@ -145530,7 +145582,7 @@ doz
 doz
 doz
 doz
-doz
+tpJ
 jHL
 mqf
 dZq
@@ -145787,7 +145839,7 @@ doz
 doz
 doz
 doz
-doz
+ceC
 jHL
 jHL
 jHL
@@ -146044,16 +146096,16 @@ doz
 doz
 doz
 doz
+ceC
+ceC
+ceC
+ceC
 doz
 doz
 doz
 doz
 doz
-doz
-doz
-doz
-doz
-doz
+ceC
 phd
 phd
 phd
@@ -146310,20 +146362,20 @@ doz
 doz
 doz
 doz
+ceC
+ceC
+ceC
+doz
+doz
+ceC
+htj
+ceC
+ceC
 doz
 doz
 doz
-doz
-doz
-doz
-doz
-doz
-doz
-doz
-doz
-doz
-doz
-doz
+ceC
+ceC
 doz
 doz
 doz
@@ -210061,7 +210113,7 @@ eIi
 eIi
 eKA
 bKJ
-tpJ
+mPE
 nOH
 kaR
 dVZ
